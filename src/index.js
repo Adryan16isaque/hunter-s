@@ -67,7 +67,9 @@ const guilda = new Guilda();
 guilda.registrarCacador(boot);
 guilda.registrarCacador(boot2);
 guilda.registrarCacador(boot3);
+
 guilda.enviarParaMissao('Pobre', 5000);
 guilda.enviarParaMissao('Mediano', 5000);
 guilda.enviarParaMissao('Xing-lung', 5000);
+
 guilda.exibirMembrosAtivos();

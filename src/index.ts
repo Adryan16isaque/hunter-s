@@ -8,6 +8,12 @@ enum ranks {
     S,
 }
 
+enum tipoMissao{
+    Rastreador,
+    Assalto,
+    Defesa
+}
+
 //REGISTRO DA ALMA (Interfaces)
 interface Cacador {
     nome: string;
@@ -31,13 +37,23 @@ class Guilda {
         console.log(`O cacador ${registro.nome} de Rank ${registro.rank} acaba de se juntar á nossa causa!`)
     }
     //O TESTE DE SOBREVIVENCIA
-    public enviarParaMissao(nome: string, dificuldade: number): boolean {
+    public enviarParaMissao(nome: string, dificuldade: number, tipoMissa:tipoMissao): boolean {
         const cacador = this.cacadores.find(no => no.nome === nome)
+        const armaEspecial = this.cacadores.find(no => no.armaEspecial === cacador?.armaEspecial)
+        
+        
+        
         if (!cacador)//(cacador === undefined)
         {
             console.log('Cacador nao encontrado');
             console.log('===========================================================');
             return false
+        }
+        
+        if(armaEspecial?.armaEspecial!= undefined && tipoMissa== tipoMissao.Assalto){
+            cacador.poderDeBatalha+= 2000
+            console.log(`${cacador.nome} recebeu buff`);
+            
         }
 
         if (cacador.poderDeBatalha >= dificuldade) {
@@ -85,16 +101,27 @@ const boot3: Cacador = {
     vivo: true
 }
 
+const boot4:Cacador={
+    nome: 'Maluco',
+    idade: 33,
+    rank: ranks.E,
+    poderDeBatalha: 3000,
+    vivo: true,
+    armaEspecial:'TomasGun'
+}
+
 //REGISTRANDO NO SISTEMA
 const guilda = new Guilda();
 guilda.registrarCacador(boot);
 guilda.registrarCacador(boot2);
 guilda.registrarCacador(boot3);
+guilda.registrarCacador(boot4);
 
 //ENVIANDO PARA MISSAO
-guilda.enviarParaMissao('Pobre', 5000)
-guilda.enviarParaMissao('Mediano', 5000)
-guilda.enviarParaMissao('Xing-lung', 5000)
+guilda.enviarParaMissao('Pobre', 5000, tipoMissao.Assalto)
+guilda.enviarParaMissao('Mediano', 5000, tipoMissao.Defesa)
+guilda.enviarParaMissao('Xing-lung', 5000, tipoMissao.Rastreador)
+guilda.enviarParaMissao('Maluco', 5000, tipoMissao.Assalto)
 
 //MOSTRANDO OS MEMBROS VIVOS
 guilda.exibirMembrosAtivos();
