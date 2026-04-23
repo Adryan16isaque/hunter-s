@@ -35,7 +35,7 @@ class Guilda {
 
         this.cacadores.push(registro)
 
-        console.log(`O cacador ${registro.nome} de Rank ${registro.rank} acaba de se juntar á nossa causa!`)
+        console.log(`O cacador ${registro.nome} de Rank ${registro.rank} acaba de se juntar á nossa causa!\n`)
     }
     //O TESTE DE SOBREVIVENCIA
     public enviarParaMissao(nome: string, dificuldade: number, tipoMissa: tipoMissao): boolean {
