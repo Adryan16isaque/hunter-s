@@ -1,4 +1,5 @@
 //HIERAQUIAS (Enums)
+//arrumar enumeracao
 enum ranks {
     E,
     D,
@@ -8,7 +9,7 @@ enum ranks {
     S,
 }
 
-enum tipoMissao{
+enum tipoMissao {
     Rastreador,
     Assalto,
     Defesa
@@ -37,23 +38,23 @@ class Guilda {
         console.log(`O cacador ${registro.nome} de Rank ${registro.rank} acaba de se juntar á nossa causa!`)
     }
     //O TESTE DE SOBREVIVENCIA
-    public enviarParaMissao(nome: string, dificuldade: number, tipoMissa:tipoMissao): boolean {
+    public enviarParaMissao(nome: string, dificuldade: number, tipoMissa: tipoMissao): boolean {
         const cacador = this.cacadores.find(no => no.nome === nome)
         const armaEspecial = this.cacadores.find(no => no.armaEspecial === cacador?.armaEspecial)
-        
-        
-        
+
+
+
         if (!cacador)//(cacador === undefined)
         {
             console.log('Cacador nao encontrado');
             console.log('===========================================================');
             return false
         }
-        
-        if(armaEspecial?.armaEspecial!= undefined && tipoMissa== tipoMissao.Assalto){
-            cacador.poderDeBatalha+= 2000
+        //tirei o != undefined, o if ja verifica se é truthly
+        if (armaEspecial?.armaEspecial && tipoMissa == tipoMissao.Assalto) {
+            cacador.poderDeBatalha += 2000
             console.log(`${cacador.nome} recebeu buff`);
-            
+
         }
 
         if (cacador.poderDeBatalha >= dificuldade) {
@@ -73,7 +74,7 @@ class Guilda {
     public exibirMembrosAtivos(): void {
         let vivos = this.cacadores.filter(sobrevivente => sobrevivente.vivo == true)
 
-        vivos.forEach(sobreviventes => 
+        vivos.forEach(sobreviventes =>
             console.log(sobreviventes.nome, sobreviventes.rank, sobreviventes.poderDeBatalha))
     }
 }
@@ -84,7 +85,8 @@ const boot: Cacador = {
     idade: 51,
     rank: ranks.E,
     poderDeBatalha: 3500,
-    vivo: true
+    vivo: true,
+    armaEspecial: 'graveto'
 }
 const boot2: Cacador = {
     nome: 'Mediano',
@@ -101,13 +103,13 @@ const boot3: Cacador = {
     vivo: true
 }
 
-const boot4:Cacador={
+const boot4: Cacador = {
     nome: 'Maluco',
     idade: 33,
     rank: ranks.E,
     poderDeBatalha: 3000,
     vivo: true,
-    armaEspecial:'TomasGun'
+    armaEspecial: 'TomasGun'
 }
 
 //REGISTRANDO NO SISTEMA
