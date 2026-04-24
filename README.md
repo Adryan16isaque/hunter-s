@@ -132,7 +132,7 @@ O TypeScript atua como um escudo de proteção — a "armadura de tipos" captura
 
 ## 👨‍💻 Autor
 
-Desenvolvido por **[Ádryan Isaque](https://github.com/Adryan16isaque)** como parte da formação Full Stack — DevQuest.
+Desenvolvido por **[Ádryan Isaque](https://github.com/Adryan16isaque) e [Tatiana Cared](https://https://github.com/TCaredT)** como parte da formação do Senac - DF.
 
 <div align="center">
   <a href="https://www.linkedin.com/in/adryan-isaque-de-oliveira-teixeira-4479a1321/">
