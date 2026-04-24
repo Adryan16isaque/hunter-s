@@ -142,7 +142,7 @@ Desenvolvido por **[Ádryan Isaque](https://github.com/Adryan16isaque) e [Tatian
     <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white"/>
   </a>
 </div>
-
+<!-- ARRUMAR LINKEDIN DA TATI -->
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:4a0080,50:1a0033,100:0d0d0d&height=100&section=footer" width="100%"/>
 </div>
