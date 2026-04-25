@@ -92,6 +92,11 @@ npm install
 # Compile o TypeScript
 tsc
 
+# Caso já compilado execute com
+node src/index.js
+
+OU
+
 # Execute o projeto
 node dist/index.js
 ```
