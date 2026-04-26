@@ -26,11 +26,40 @@ var tipoMissao;
     tipoMissao[tipoMissao["Defesa"] = 2] = "Defesa";
 })(tipoMissao || (tipoMissao = {}));
 const detalhesMissao = {
-    [tipoMissao.Rastreamento]: { nivelMin: 1000, nivelMax: 12000 },
-    [tipoMissao.Assalto]: { nivelMin: 1000, nivelMax: 12000 },
-    [tipoMissao.Defesa]: { nivelMin: 1000, nivelMax: 12000 }
+    [tipoMissao.Rastreamento]: { tipo: tipoMissao.Rastreamento, nivelMin: 1000, nivelMax: 12000 },
+    [tipoMissao.Assalto]: { tipo: tipoMissao.Assalto, nivelMin: 1000, nivelMax: 12000 },
+    [tipoMissao.Defesa]: { tipo: tipoMissao.Defesa, nivelMin: 1000, nivelMax: 12000 }
 };
-//SELEÇÃO DE MISSÃO E NÍVEL ALEATÓRIO
+// //SELEÇÃO DE MISSÃO E NÍVEL ALEATÓRIO
+//EM CONSTRUÇÃO
+// function escolherMissao (tipo: tipoMissao) {
+//     const missaoEscolhida = []
+//     console.log(`Escolha qual o tipo de missão:(R)Rastreamento, (A)Assalto, (D)Defesa`)
+//     //colocar as opções pra pessoa digitar, é com prompt? Não estou usando html, mas apenas terminal???
+//     if (missaoEscolhida == "Rastreamento"){
+//         console.log(`Missão iniciada ${missaoEscolhida}`)
+//         geradorDeMissao()
+//     }
+//     else if (missaoEscolhida == "Assalto"){
+//         console.log(`Missão iniciada ${missaoEscolhida}`)
+//         geradorDeMissao()
+//     }
+//     else (missaoEscolhida == "Defesa") {
+//         console.log(`Missão iniciada ${missaoEscolhida}`)
+//         geradorDeMissao()
+// }
+function escolherMissao() {
+    console.log(`Escolha qual o tipo de missão:(R) Rastreamento, (A) Assalto, (D) Defesa`);
+    process.stdin.once("data", (letraDigitada) => {
+        const missaoEscolhida = letraDigitada.toString().trim();
+        console.log("Missão iniciada:", missaoEscolhida);
+    });
+}
+// function geradorDeMissao(nivelMin: number, nivelMax: number): number {
+//     const { nivelMin, nivelMax } = detalhesMissao[tipoMissao]
+//     const dificuldadeMissao = Math.floor(Math.random() * (nivelMax - nivelMin + 1) + nivelMin)
+//     return dificuldadeMissao
+// }
 //CRIAÇÃO DE PERSOANGENS
 function criarCacador(nome, idade, rank) {
     return {
@@ -65,7 +94,7 @@ class Guilda {
         console.log(`O cacador ${registro.nome} de Rank ${ranks[registro.rank]} acaba de se juntar á nossa causa!\n`);
     }
     //O TESTE DE SOBREVIVENCIA
-    enviarParaMissao(nome, dificuldade, tipoMissa) {
+    enviarParaMissao(nome, dificuldade, tipoDeMissao) {
         const cacador = this.cacadores.find(no => no.nome === nome);
         const armaEspecial = this.cacadores.find(no => no.armaEspecial === cacador?.armaEspecial);
         if (!cacador) //(cacador === undefined)
@@ -75,7 +104,7 @@ class Guilda {
             return false;
         }
         //tirei o != undefined, o if ja verifica se é truthly
-        if (armaEspecial?.armaEspecial && tipoMissa == tipoMissao.Assalto) {
+        if (armaEspecial?.armaEspecial && tipoDeMissao == tipoMissao.Assalto) {
             cacador.poderDeBatalha += 2000;
             console.log(`${cacador.nome} recebeu buff`);
         }
@@ -97,7 +126,7 @@ class Guilda {
         vivos.forEach(sobreviventes => console.log(sobreviventes.nome, sobreviventes.rank, sobreviventes.poderDeBatalha));
     }
 }
-//CRIACAO DE CACADORES
+//CRIACAO DE CACADORES (Onde são colocados os dados de cada um. Rank tem margem de poder baseado na interface dadosRanks)
 const npcs = [
     criarCacador('Pobre', 51, ranks.E),
     criarCacador('Mediano', 15, ranks.C),
@@ -105,19 +134,20 @@ const npcs = [
     criarCacador('Maluco', 33, ranks.B), //Fazer depois um jeito de acrescentar a tommy gun???
     criarCacador('BigBig', 24, ranks.D),
 ];
-//REGISTRANDO NO SISTEMA
+//REGISTRANDO NO SISTEMA (Mostra aqueles que estão na guilda)
 const guilda = new Guilda();
 guilda.registrarCacador(npcs[0]);
 guilda.registrarCacador(npcs[1]);
 guilda.registrarCacador(npcs[2]);
 guilda.registrarCacador(npcs[3]);
 guilda.registrarCacador(npcs[4]);
-//ENVIANDO PARA MISSAO
+//ENVIANDO PARA MISSAO (Mesmo registrado, somente aqui ele é ou não enviado para a missão)
 guilda.enviarParaMissao('Pobre', 5000, tipoMissao.Assalto);
 guilda.enviarParaMissao('Mediano', 5000, tipoMissao.Defesa);
 guilda.enviarParaMissao('Xing-lung', 5000, tipoMissao.Rastreamento);
-// guilda.enviarParaMissao('Maluco', 5000, tipoMissao.Assalto)
-// guilda.enviarParaMissao('BigBig', 5000, tipoMissao.Assalto)
+guilda.enviarParaMissao('Maluco', 5000, tipoMissao.Assalto);
+guilda.enviarParaMissao('BigBig', 5000, tipoMissao.Assalto);
 //Construir a lógica de Randon nivel pra masmorra (linhas 37 a 52)
-//Corrigir erro da lista de criação de personagens. > Ao tirar personagem, ainda aparece tentativa de console dos "excluídos"
-//Acrescentar "Escolha" de masmorra pro jogador
+//CORRIGIDO>>>Corrigir erro da lista de criação de personagens: Ao tirar personagem, ainda aparece tentativa de console dos "excluídos".
+//Acrescentar "Escolha" de masmorra pro jogador >>> CORRIGIR: index.ts:76:5 - error TS2591: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+//Acrescentar "emboscada?" para Rastreameto e que dá debuff nos persoagens

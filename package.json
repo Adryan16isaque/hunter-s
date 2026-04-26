@@ -8,12 +8,20 @@
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["typescript", "guild-management", "simulator", "rpg"],
+  "keywords": [
+    "typescript",
+    "guild-management",
+    "simulator",
+    "rpg"
+  ],
   "author": "Ádryan Isaque - Tatiana Cared",
   "license": "ISC",
   "description": "Sistema de gerenciamento de Guilda de Caçadores desenvolvido em TypeScript. Demonstra tipagem estática, interfaces, classes e encapsulamento para eliminar erros de runtime.",
   "dependencies": {
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0"
   }
 }

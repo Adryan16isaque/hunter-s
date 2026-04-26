@@ -52,20 +52,17 @@ const detalhesMissao: Record<tipoMissao, dadosMissao> = { //Mesmo formato anteri
     [tipoMissao.Defesa]: { tipo: tipoMissao.Defesa, nivelMin: 1000, nivelMax: 12000}
 }
 
-
 // //SELEÇÃO DE MISSÃO E NÍVEL ALEATÓRIO
+//EM CONSTRUÇÃO
 
-// function escolherMissao (tipo: tipoMissao) {
-//     const missaoEscolhida = []
-//     console.log(`Escolha qual o tipo de missão:`)
-//     //colocar as opções pra pessoa digitar, é com prompt? Não estou usando html, mas apenas terminal???
-//     for (missaoEscolhida == "Assalto"){
-//         console.log(`Missão iniciada ${missaoEscolhida}`)
+function escolherMissao() {  //Aqui o usuário tem a chance de escolher, a partir de um evento "data", que captura o que foi digitado pelo usuário.
+    console.log(`Escolha qual o tipo de missão:(R) Rastreamento, (A) Assalto, (D) Defesa`)
+    process.stdin.once("data", (letraDigitada:) => {
+        const missaoEscolhida = letraDigitada.toString().trim()
 
-//     }
-//     for (missaoEscolhida == "Defesa")
-    
-
+        console.log("Missão iniciada:", missaoEscolhida)
+    })
+}
 // function geradorDeMissao(nivelMin: number, nivelMax: number): number {
 //     const { nivelMin, nivelMax } = detalhesMissao[tipoMissao]
 //     const dificuldadeMissao = Math.floor(Math.random() * (nivelMax - nivelMin + 1) + nivelMin)
@@ -134,6 +131,7 @@ class Guilda {
             console.log(`${cacador.nome} recebeu buff`);
 
         }
+        
 
         if (cacador.poderDeBatalha >= dificuldade) {
             console.log(`Missao bem sucedida, o cacador: ${cacador.nome} conseguiu com ${cacador.poderDeBatalha} `);
@@ -182,6 +180,6 @@ guilda.enviarParaMissao('Maluco', 5000, tipoMissao.Assalto)
 guilda.enviarParaMissao('BigBig', 5000, tipoMissao.Assalto)
 
 //Construir a lógica de Randon nivel pra masmorra (linhas 37 a 52)
-//Corrigir erro da lista de criação de personagens. > Ao tirar personagem, ainda aparece tentativa de console dos "excluídos"
-//Acrescentar "Escolha" de masmorra pro jogador
+//CORRIGIDO>>>Corrigir erro da lista de criação de personagens: Ao tirar personagem, ainda aparece tentativa de console dos "excluídos".
+//Acrescentar "Escolha" de masmorra pro jogador >>> CORRIGIR: index.ts:76:5 - error TS2591: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
 //Acrescentar "emboscada?" para Rastreameto e que dá debuff nos persoagens
