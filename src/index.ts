@@ -1,4 +1,4 @@
-//HIERAQUIAS (Enums)
+//HIERAQUIA (Enum) dos Ranks
 enum ranks {
     E,
     D,
@@ -8,21 +8,12 @@ enum ranks {
     S,
 }
 
+//ESPECIFICAÇÃO DE PATENTES (interface) 
 interface dadosRanks {
     minPower: number;
     maxPower: number;
     hasSpecialWeapon: boolean;
-}
-
-//REGISTRO DA ALMA (Interfaces)
-interface Cacador {
-    nome: string;
-    idade: number;
-    rank: ranks;
-    poderDeBatalha: number;
-    vivo: boolean;
-    armaEspecial?: boolean;
-}
+};
 
 const detalhesRanks: Record<ranks, dadosRanks> = { //cria um objeto com chave e valor. Chave sendo cada letra de rank e o valor os dados que a gente queria colocar
     [ranks.E]: { minPower: 1000, maxPower: 2000, hasSpecialWeapon: false },
@@ -33,13 +24,34 @@ const detalhesRanks: Record<ranks, dadosRanks> = { //cria um objeto com chave e 
     [ranks.S]: { minPower: 10001, maxPower: 20000, hasSpecialWeapon: true },
 };
 
+//REGISTRO DA ALMA (Interfaces)
+interface Cacador {
+    nome: string;
+    idade: number;
+    rank: ranks;
+    poderDeBatalha: number;
+    vivo: boolean;
+    armaEspecial?: boolean;
+};
+
 enum tipoMissao {
-    Rastreador,
+    Rastreamento,
     Assalto,
     Defesa
 }
 
-// GUILDA (Classes e Encapsulamento)
+interface dadosMissao {
+    nivelMin: number;
+    nivelMax: number;
+}
+
+const detalhesMissao: Record<tipoMissao, dadosMissao> = { //Mesmo formato anterior para as masmorras.
+    [tipoMissao.Rastreamento]: { nivelMin: 1000, nivelMax: 12000},
+    [tipoMissao.Assalto]: { nivelMin: 1000, nivelMax: 12000},
+    [tipoMissao.Defesa]: { nivelMin: 1000, nivelMax: 12000}
+}
+
+//CRIAÇÃO DE PERSOANGENS
 function criarCacador(nome: string, idade: number, rank: ranks): Cacador {
     return {
         nome: nome,
@@ -59,18 +71,19 @@ function geradorDePoder(rank: ranks): number {
 
 function geradorDeArma(): boolean {
     const resultado = Math.random() < 0.5
-
+    
     if (resultado == true) {
-
+        
         return true
     }
-
+    
     else return false
-
+    
 }
 console.log("ARMA FOI ATIBUIDA: " + geradorDeArma());
 
 
+// GUILDA (Classes e Encapsulamento)
 class Guilda {
     private cacadores: Cacador[] = [];
 
@@ -124,40 +137,28 @@ class Guilda {
 }
 
 //CRIACAO DE CACADORES
-const npc1 = criarCacador('Pobre', 51, ranks.E)
-const npc2 = criarCacador('Mediano', 15, ranks.C)
-const npc3 = criarCacador('Xing-lung', 21, ranks.S)
-const npc4 = criarCacador('Maluco', 33, ranks.B) //E a tomas gun???
-const npcBoss = criarCacador('BigBig', 24, ranks.D)
+const npcs : Cacador [] = [
+    criarCacador('Pobre', 51, ranks.E),
+    criarCacador('Mediano', 15, ranks.C),
+    criarCacador('Xing-lung', 21, ranks.S),
+    // criarCacador('Maluco', 33, ranks.B), //E como acrescentar a tommy gun???
+    // criarCacador('BigBig', 24, ranks.D),
+]
 
 //REGISTRANDO NO SISTEMA
 const guilda = new Guilda();
-guilda.registrarCacador(npc1);
-guilda.registrarCacador(npc2);
-guilda.registrarCacador(npc3);
-guilda.registrarCacador(npc4);
-guilda.registrarCacador(npcBoss);
+guilda.registrarCacador(npcs[0]);
+guilda.registrarCacador(npcs[1]);
+guilda.registrarCacador(npcs[2])
+// guilda.registrarCacador(npcs[3]);
+// guilda.registrarCacador(npcs[4]);
 
 //ENVIANDO PARA MISSAO
 guilda.enviarParaMissao('Pobre', 5000, tipoMissao.Assalto)
 guilda.enviarParaMissao('Mediano', 5000, tipoMissao.Defesa)
-guilda.enviarParaMissao('Xing-lung', 5000, tipoMissao.Rastreador)
-guilda.enviarParaMissao('Maluco', 5000, tipoMissao.Assalto)
-guilda.enviarParaMissao('BigBig', 5000, tipoMissao.Assalto)
+guilda.enviarParaMissao('Xing-lung', 5000, tipoMissao.Rastreamento)
+// guilda.enviarParaMissao('Maluco', 5000, tipoMissao.Assalto)
+// guilda.enviarParaMissao('BigBig', 5000, tipoMissao.Assalto)
 
-
-
-
-//================================== IDEIA PARA IMPLEMENTAR DPS =========================================//
-// const npcs: Cacador[] = [];
-// npcs.push(new Npc("Pobre", 51, ranks.E, 3500, true));
-// npcs.push(new Npc("Mediano", 15, ranks.C, 4500, true));
-// npcs.push(new Npc("Xing-lung", 21, ranks.S, 9000, true));
-// npcs.push(new Npc("Maluco", 33, ranks.E, 3000, true, "TomasGun"))
-// npcs.push(new npcBoss("bigibgi", 33, ranks.E, 3000, true, "TomasGun"))
-// //REGISTRANDO NO SISTEMA
-// const guilda = new Guilda();
-// guilda.registrarCacador(npc[0]);
-// guilda.registrarCacador(npc2);
-// guilda.registrarCacador(npc3);
-//========================================================================================================//
+//Construir a lógica de Randon nivel pra masmorra (linhas 37 a 52)
+//Corrigir erro da lista de criação de personagens. > Ao tirar personagem, ainda aparece tentativa de console dos "excluídos"
