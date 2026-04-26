@@ -8,7 +8,7 @@ enum ranks {
     S,
 }
 
-//ESPECIFICAÇÃO DE PATENTES (interface) 
+//ESPECIFICAÇÃO DE RANKS (interface) 
 interface dadosRanks {
     minPower: number;
     maxPower: number;
@@ -41,15 +41,36 @@ enum tipoMissao {
 }
 
 interface dadosMissao {
+    tipo: tipoMissao;
     nivelMin: number;
     nivelMax: number;
 }
 
 const detalhesMissao: Record<tipoMissao, dadosMissao> = { //Mesmo formato anterior para as masmorras.
-    [tipoMissao.Rastreamento]: { nivelMin: 1000, nivelMax: 12000},
-    [tipoMissao.Assalto]: { nivelMin: 1000, nivelMax: 12000},
-    [tipoMissao.Defesa]: { nivelMin: 1000, nivelMax: 12000}
+    [tipoMissao.Rastreamento]: { tipo: tipoMissao.Rastreamento, nivelMin: 1000, nivelMax: 12000},
+    [tipoMissao.Assalto]: { tipo: tipoMissao.Assalto, nivelMin: 1000, nivelMax: 12000},
+    [tipoMissao.Defesa]: { tipo: tipoMissao.Defesa, nivelMin: 1000, nivelMax: 12000}
 }
+
+
+// //SELEÇÃO DE MISSÃO E NÍVEL ALEATÓRIO
+
+// function escolherMissao (tipo: tipoMissao) {
+//     const missaoEscolhida = []
+//     console.log(`Escolha qual o tipo de missão:`)
+//     //colocar as opções pra pessoa digitar, é com prompt? Não estou usando html, mas apenas terminal???
+//     for (missaoEscolhida == "Assalto"){
+//         console.log(`Missão iniciada ${missaoEscolhida}`)
+
+//     }
+//     for (missaoEscolhida == "Defesa")
+    
+
+// function geradorDeMissao(nivelMin: number, nivelMax: number): number {
+//     const { nivelMin, nivelMax } = detalhesMissao[tipoMissao]
+//     const dificuldadeMissao = Math.floor(Math.random() * (nivelMax - nivelMin + 1) + nivelMin)
+//     return dificuldadeMissao
+// }
 
 //CRIAÇÃO DE PERSOANGENS
 function criarCacador(nome: string, idade: number, rank: ranks): Cacador {
@@ -95,7 +116,7 @@ class Guilda {
         console.log(`O cacador ${registro.nome} de Rank ${ranks[registro.rank]} acaba de se juntar á nossa causa!\n`)
     }
     //O TESTE DE SOBREVIVENCIA
-    public enviarParaMissao(nome: string, dificuldade: number, tipoMissa: tipoMissao): boolean {
+    public enviarParaMissao(nome: string, dificuldade: number, tipoDeMissao: tipoMissao): boolean {
         const cacador = this.cacadores.find(no => no.nome === nome)
         const armaEspecial = this.cacadores.find(no => no.armaEspecial === cacador?.armaEspecial)
 
@@ -108,7 +129,7 @@ class Guilda {
             return false
         }
         //tirei o != undefined, o if ja verifica se é truthly
-        if (armaEspecial?.armaEspecial && tipoMissa == tipoMissao.Assalto) {
+        if (armaEspecial?.armaEspecial && tipoDeMissao == tipoMissao.Assalto) {
             cacador.poderDeBatalha += 2000
             console.log(`${cacador.nome} recebeu buff`);
 
@@ -136,29 +157,31 @@ class Guilda {
     }
 }
 
-//CRIACAO DE CACADORES
+//CRIACAO DE CACADORES (Onde são colocados os dados de cada um. Rank tem margem de poder baseado na interface dadosRanks)
 const npcs : Cacador [] = [
     criarCacador('Pobre', 51, ranks.E),
     criarCacador('Mediano', 15, ranks.C),
     criarCacador('Xing-lung', 21, ranks.S),
-    // criarCacador('Maluco', 33, ranks.B), //E como acrescentar a tommy gun???
-    // criarCacador('BigBig', 24, ranks.D),
+    criarCacador('Maluco', 33, ranks.B), //Fazer depois um jeito de acrescentar a tommy gun???
+    criarCacador('BigBig', 24, ranks.D),
 ]
 
-//REGISTRANDO NO SISTEMA
+//REGISTRANDO NO SISTEMA (Mostra aqueles que estão na guilda)
 const guilda = new Guilda();
 guilda.registrarCacador(npcs[0]);
 guilda.registrarCacador(npcs[1]);
 guilda.registrarCacador(npcs[2])
-// guilda.registrarCacador(npcs[3]);
-// guilda.registrarCacador(npcs[4]);
+guilda.registrarCacador(npcs[3]);
+guilda.registrarCacador(npcs[4]);
 
-//ENVIANDO PARA MISSAO
+//ENVIANDO PARA MISSAO (Mesmo registrado, somente aqui ele é ou não enviado para a missão)
 guilda.enviarParaMissao('Pobre', 5000, tipoMissao.Assalto)
 guilda.enviarParaMissao('Mediano', 5000, tipoMissao.Defesa)
 guilda.enviarParaMissao('Xing-lung', 5000, tipoMissao.Rastreamento)
-// guilda.enviarParaMissao('Maluco', 5000, tipoMissao.Assalto)
-// guilda.enviarParaMissao('BigBig', 5000, tipoMissao.Assalto)
+guilda.enviarParaMissao('Maluco', 5000, tipoMissao.Assalto)
+guilda.enviarParaMissao('BigBig', 5000, tipoMissao.Assalto)
 
 //Construir a lógica de Randon nivel pra masmorra (linhas 37 a 52)
 //Corrigir erro da lista de criação de personagens. > Ao tirar personagem, ainda aparece tentativa de console dos "excluídos"
+//Acrescentar "Escolha" de masmorra pro jogador
+//Acrescentar "emboscada?" para Rastreameto e que dá debuff nos persoagens
