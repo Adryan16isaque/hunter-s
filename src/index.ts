@@ -10,18 +10,18 @@ enum ranks {
 
 //ESPECIFICAÇÃO DE RANKS (interface) 
 interface dadosRanks {
-    minPower: number;
-    maxPower: number;
-    hasSpecialWeapon: boolean;
+    poderMinimo: number;
+    poderMaximo: number;
+    temArmaEspecial: boolean;
 };
 
 const detalhesRanks: Record<ranks, dadosRanks> = { //cria um objeto com chave e valor. Chave sendo cada letra de rank e o valor os dados que a gente queria colocar
-    [ranks.E]: { minPower: 1000, maxPower: 2000, hasSpecialWeapon: false },
-    [ranks.D]: { minPower: 2001, maxPower: 4000, hasSpecialWeapon: false },
-    [ranks.C]: { minPower: 4001, maxPower: 6000, hasSpecialWeapon: false },
-    [ranks.B]: { minPower: 6001, maxPower: 8000, hasSpecialWeapon: true },
-    [ranks.A]: { minPower: 8001, maxPower: 10000, hasSpecialWeapon: true },
-    [ranks.S]: { minPower: 10001, maxPower: 20000, hasSpecialWeapon: true },
+    [ranks.E]: { poderMinimo: 1000, poderMaximo: 2000, temArmaEspecial: false },
+    [ranks.D]: { poderMinimo: 2001, poderMaximo: 4000, temArmaEspecial: false },
+    [ranks.C]: { poderMinimo: 4001, poderMaximo: 6000, temArmaEspecial: false },
+    [ranks.B]: { poderMinimo: 6001, poderMaximo: 8000, temArmaEspecial: true },
+    [ranks.A]: { poderMinimo: 8001, poderMaximo: 10000, temArmaEspecial: true },
+    [ranks.S]: { poderMinimo: 10001, poderMaximo: 12000, temArmaEspecial: true },
 };
 
 //REGISTRO DA ALMA (Interfaces)
@@ -67,7 +67,6 @@ function escolherMissao() {  //Aqui o usuário tem a chance de escolher, a parti
         } else if (letraEscolhida === "a") {
             tipoEscolhido = tipoMissao.Assalto;
             console.log("Missão iniciada:", tipoMissao[1])
-            console.log("ARMA FOI ATIBUIDA: " + geradorDeArma());
         } else if (letraEscolhida === "d") {
             tipoEscolhido = tipoMissao.Defesa;
             console.log("Missão iniciada:", tipoMissao[2])
@@ -78,20 +77,26 @@ function escolherMissao() {  //Aqui o usuário tem a chance de escolher, a parti
         }        
         
         geradorDeMissao(tipoEscolhido);
-
+        
         const dificuldadeMissao = geradorDeMissao(tipoEscolhido);
         console.log(`Dificuldade: ${dificuldadeMissao}`)
+
+        console.log('===========================================================');
         
+        if (letraEscolhida === "a") {
+            // console.log(`ARMA FOI ATIBUIDA: ${geradorDeArma()}`);
+            console.log(`ARMA FOI ATIBUIDA: ${geradorDeArma()? "sim" : "não"}`);
+            console.log('===========================================================');
+        }
+        console.log(`====== PAINEL DE NOVOS MEMBROS ======`);
         registrarMembrosGuilda();
 
+        console.log(`====== RESULTADO DA MISSÃO ======`)
+        enviarMembros(dificuldadeMissao, tipoEscolhido);
     })
-    // guilda.enviarParaMissao('Pobre', dificuldadeMissao, tipoEscolhido);
-    // guilda.enviarParaMissao('Mediano', dificuldadeMissao, tipoEscolhido);
-    // guilda.enviarParaMissao('Xing-lung', dificuldadeMissao, tipoEscolhido);
-    // guilda.enviarParaMissao('Maluco', dificuldadeMissao, tipoEscolhido);
-    // guilda.enviarParaMissao('BigBig', dificuldadeMissao, tipoEscolhido);
+
 }
-escolherMissao();
+escolherMissao(); //executa a escolha do usuário. Gera a dificuldade. Em assanto, ressalta se há atribuição de arma ou não.
 
 //NÍVEL DA MISSÃO ALEATÓRIO
 function geradorDeMissao(tipo: tipoMissao):number {
@@ -115,8 +120,8 @@ function criarCacador(nome: string, idade: number, rank: ranks): Cacador {
 }
 
 function geradorDePoder(rank: ranks): number {
-    const { minPower, maxPower } = detalhesRanks[rank]
-    const poderRank = Math.floor(Math.random() * (maxPower - minPower + 1) + minPower)
+    const { poderMinimo, poderMaximo } = detalhesRanks[rank]
+    const poderRank = Math.floor(Math.random() * (poderMaximo - poderMinimo + 1) + poderMinimo)
     return poderRank
 }
 
@@ -128,9 +133,8 @@ function geradorDeArma(): boolean {
     } else return false
     
 }
-//TESTE E CONFERÊNCIA DA ARMA
+//TESTE E CONFERÊNCIA DO GERADOR DE ARMA
 // console.log("ARMA FOI ATIBUIDA: " + geradorDeArma());
-
 
 // GUILDA (Classes e Encapsulamento)
 class Guilda {
@@ -146,7 +150,7 @@ class Guilda {
     //O TESTE DE SOBREVIVENCIA
     public enviarParaMissao(nome: string, dificuldade: number, tipoDeMissao: tipoMissao): boolean {
         const cacador = this.cacadores.find(no => no.nome === nome)
-        const armaEspecial = this.cacadores.find(no => no.armaEspecial === cacador?.armaEspecial)
+        const armaEspecial = this.cacadores.find(no => no.armaEspecial === cacador?.armaEspecial) 
 
         if (!cacador)//(cacador === undefined)
         {
@@ -158,16 +162,15 @@ class Guilda {
         if (armaEspecial?.armaEspecial && tipoDeMissao == tipoMissao.Assalto) {
             cacador.poderDeBatalha += 2000
             console.log(`${cacador.nome} recebeu buff`);
-
         }
         
         if (cacador.poderDeBatalha >= dificuldade) {
-            console.log(`Missao bem sucedida, o cacador: ${cacador.nome} conseguiu com ${cacador.poderDeBatalha} `);
+            console.log(`Missao bem sucedida, o cacador: ${cacador.nome} conseguiu com ${cacador.poderDeBatalha} de poder!`);
             console.log('===========================================================');
             return true
         }
         else {
-            console.log(`O cacador ${cacador.nome} falhou tragicamente na missao com ${cacador.poderDeBatalha}`);
+            console.log(`O cacador ${cacador.nome} falhou tragicamente na missao com ${cacador.poderDeBatalha} de poder!`);
             cacador.vivo = false
             console.log('===========================================================');
 
@@ -193,8 +196,8 @@ const npcs : Cacador [] = [
 ]
 
 //REGISTRANDO NO SISTEMA (Mostra aqueles que estão na guilda)
+const guilda = new Guilda();
 function registrarMembrosGuilda() {
-    const guilda = new Guilda();
     guilda.registrarCacador(npcs[0]);
     guilda.registrarCacador(npcs[1]);
     guilda.registrarCacador(npcs[2]);
@@ -202,12 +205,22 @@ function registrarMembrosGuilda() {
     guilda.registrarCacador(npcs[4]);
 }
 
-// //ENVIANDO PARA MISSAO (Mesmo registrado, somente aqui ele é ou não enviado para a missão)
+//ENVIANDO PARA MISSAO (Mesmo registrado, somente aqui ele é ou não enviado para a missão)
+function enviarMembros(dificuldadeMissao: number, tipoEscolhido: tipoMissao) {
+    guilda.enviarParaMissao('Pobre', dificuldadeMissao, tipoEscolhido);
+    guilda.enviarParaMissao('Mediano', dificuldadeMissao, tipoEscolhido);
+    guilda.enviarParaMissao('Xing-lung', dificuldadeMissao, tipoEscolhido);
+    guilda.enviarParaMissao('Maluco', dificuldadeMissao, tipoEscolhido);
+    guilda.enviarParaMissao('BigBig', dificuldadeMissao, tipoEscolhido);
+}
+
+//ANTIGO >>> ENVIANDO PARA MISSAO (Mesmo registrado, somente aqui ele é ou não enviado para a missão)
 // guilda.enviarParaMissao('Pobre', 5000, tipoMissao.Assalto)
 // guilda.enviarParaMissao('Mediano', 5000, tipoMissao.Defesa)
 // guilda.enviarParaMissao('Xing-lung', 5000, tipoMissao.Rastreamento)
 // guilda.enviarParaMissao('Maluco', 5000, tipoMissao.Assalto)
 // guilda.enviarParaMissao('BigBig', 5000, tipoMissao.Assalto)
+
 
 //FEITO>>> Construir a lógica de Randon nivel pra masmorra (linhas 37 a 52)
 //CORRIGIDO>>> Corrigir erro da lista de criação de personagens: Ao tirar personagem, ainda aparece tentativa de console dos "excluídos".
