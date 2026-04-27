@@ -11,12 +11,12 @@ var ranks;
 })(ranks || (ranks = {}));
 ;
 const detalhesRanks = {
-    [ranks.E]: { poderMinimo: 1000, poderMaximo: 2000, temArmaEspecial: geradorDeArma() },
-    [ranks.D]: { poderMinimo: 2001, poderMaximo: 4000, temArmaEspecial: geradorDeArma() },
-    [ranks.C]: { poderMinimo: 4001, poderMaximo: 6000, temArmaEspecial: geradorDeArma() },
-    [ranks.B]: { poderMinimo: 6001, poderMaximo: 8000, temArmaEspecial: geradorDeArma() },
-    [ranks.A]: { poderMinimo: 8001, poderMaximo: 10000, temArmaEspecial: geradorDeArma() },
-    [ranks.S]: { poderMinimo: 10001, poderMaximo: 12000, temArmaEspecial: geradorDeArma() },
+    [ranks.E]: { poderMinimo: 1000, poderMaximo: 2000, temArmaEspecial: false },
+    [ranks.D]: { poderMinimo: 2001, poderMaximo: 4000, temArmaEspecial: false },
+    [ranks.C]: { poderMinimo: 4001, poderMaximo: 6000, temArmaEspecial: false },
+    [ranks.B]: { poderMinimo: 6001, poderMaximo: 8000, temArmaEspecial: true },
+    [ranks.A]: { poderMinimo: 8001, poderMaximo: 10000, temArmaEspecial: true },
+    [ranks.S]: { poderMinimo: 10001, poderMaximo: 12000, temArmaEspecial: true },
 };
 ;
 //CONSTRUINDO MISSÃO
@@ -45,7 +45,6 @@ function escolherMissao() {
         else if (letraEscolhida === "a") {
             tipoEscolhido = tipoMissao.Assalto;
             console.log("Missão iniciada:", tipoMissao[1]);
-            console.log(`ARMA FOI ATIBUIDA: ${geradorDeArma()}`);
         }
         else if (letraEscolhida === "d") {
             tipoEscolhido = tipoMissao.Defesa;
@@ -59,11 +58,14 @@ function escolherMissao() {
         geradorDeMissao(tipoEscolhido);
         const dificuldadeMissao = geradorDeMissao(tipoEscolhido);
         console.log(`Dificuldade: ${dificuldadeMissao}`);
-        console.log('===========================================================');
-        console.log(`====== PAINEL DE NOVOS MEMBROS ======`);
-        registrarMembrosGuilda();
-        console.log(`====== RESULTADO DA MISSÃO ======`);
-        enviarMembros(dificuldadeMissao, tipoEscolhido);
+        if (tipoEscolhido === tipoMissao.Assalto) {
+            console.log(`Chance de caçadores receberem ARMA ESPECIAL`);
+            console.log('===========================================================');
+            console.log(`====== PAINEL DE NOVOS MEMBROS ======`);
+            registrarMembrosGuilda();
+            console.log(`====== RESULTADO DA MISSÃO ======`);
+            enviarMembros(dificuldadeMissao, tipoEscolhido);
+        }
     });
 }
 escolherMissao(); //executa a escolha do usuário. Gera a dificuldade. Em assanto, ressalta se há atribuição de arma ou não.
@@ -90,15 +92,13 @@ function geradorDePoder(rank) {
     return poderRank;
 }
 function geradorDeArma() {
-    const resultado = Math.random() < 0.5;
-    if (resultado == true) {
+    const resultadoDeArma = Math.random() < 0.5;
+    if (resultadoDeArma == true) {
         return true;
     }
     else
         return false;
 }
-//TESTE E CONFERÊNCIA DO GERADOR DE ARMA
-console.log("TESTE DE FORA PARA ARMA FOI ATIBUIDA: " + geradorDeArma());
 // GUILDA (Classes e Encapsulamento)
 class Guilda {
     cacadores = [];
@@ -118,7 +118,7 @@ class Guilda {
             return false;
         }
         //tirei o != undefined, o if ja verifica se é truthly
-        if (armaEspecial?.armaEspecial && tipoDeMissao == tipoMissao.Assalto) {
+        if (tipoDeMissao === tipoMissao.Assalto && cacador.armaEspecial === true) {
             cacador.poderDeBatalha += 2000;
             console.log(`${cacador.nome} recebeu buff`);
         }
@@ -175,3 +175,4 @@ function enviarMembros(dificuldadeMissao, tipoEscolhido) {
 //CORRIGIDO>>> Corrigir erro da lista de criação de personagens: Ao tirar personagem, ainda aparece tentativa de console dos "excluídos".
 //Acrescentar "Escolha" de masmorra pro jogador >>> CORRIGIDO NO TSCONFIG: index.ts:76:5 - error TS2591: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
 //Acrescentar "emboscada?" para Rastreameto e que dá debuff nos persoagens
+//BUFF DE ARMA ESPECIAL ACONTECENDO MESMO SEM TER ARMA ATRIBUIDA NA MISSAO. >>>CORRIGIDO >>> Mensagem de aviso de CHANCE e não que foi realmente atribuída ao gerar missão.
