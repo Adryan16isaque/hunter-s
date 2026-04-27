@@ -11,12 +11,12 @@ var ranks;
 })(ranks || (ranks = {}));
 ;
 const detalhesRanks = {
-    [ranks.E]: { poderMinimo: 1000, poderMaximo: 2000, temArmaEspecial: false },
-    [ranks.D]: { poderMinimo: 2001, poderMaximo: 4000, temArmaEspecial: false },
-    [ranks.C]: { poderMinimo: 4001, poderMaximo: 6000, temArmaEspecial: false },
-    [ranks.B]: { poderMinimo: 6001, poderMaximo: 8000, temArmaEspecial: true },
-    [ranks.A]: { poderMinimo: 8001, poderMaximo: 10000, temArmaEspecial: true },
-    [ranks.S]: { poderMinimo: 10001, poderMaximo: 12000, temArmaEspecial: true },
+    [ranks.E]: { poderMinimo: 1000, poderMaximo: 2000, temArmaEspecial: geradorDeArma() },
+    [ranks.D]: { poderMinimo: 2001, poderMaximo: 4000, temArmaEspecial: geradorDeArma() },
+    [ranks.C]: { poderMinimo: 4001, poderMaximo: 6000, temArmaEspecial: geradorDeArma() },
+    [ranks.B]: { poderMinimo: 6001, poderMaximo: 8000, temArmaEspecial: geradorDeArma() },
+    [ranks.A]: { poderMinimo: 8001, poderMaximo: 10000, temArmaEspecial: geradorDeArma() },
+    [ranks.S]: { poderMinimo: 10001, poderMaximo: 12000, temArmaEspecial: geradorDeArma() },
 };
 ;
 //CONSTRUINDO MISSÃO
@@ -45,6 +45,7 @@ function escolherMissao() {
         else if (letraEscolhida === "a") {
             tipoEscolhido = tipoMissao.Assalto;
             console.log("Missão iniciada:", tipoMissao[1]);
+            console.log(`ARMA FOI ATIBUIDA: ${geradorDeArma()}`);
         }
         else if (letraEscolhida === "d") {
             tipoEscolhido = tipoMissao.Defesa;
@@ -59,11 +60,6 @@ function escolherMissao() {
         const dificuldadeMissao = geradorDeMissao(tipoEscolhido);
         console.log(`Dificuldade: ${dificuldadeMissao}`);
         console.log('===========================================================');
-        if (letraEscolhida === "a") {
-            // console.log(`ARMA FOI ATIBUIDA: ${geradorDeArma()}`);
-            console.log(`ARMA FOI ATIBUIDA: ${geradorDeArma() ? "sim" : "não"}`);
-            console.log('===========================================================');
-        }
         console.log(`====== PAINEL DE NOVOS MEMBROS ======`);
         registrarMembrosGuilda();
         console.log(`====== RESULTADO DA MISSÃO ======`);
@@ -102,7 +98,7 @@ function geradorDeArma() {
         return false;
 }
 //TESTE E CONFERÊNCIA DO GERADOR DE ARMA
-// console.log("ARMA FOI ATIBUIDA: " + geradorDeArma());
+console.log("TESTE DE FORA PARA ARMA FOI ATIBUIDA: " + geradorDeArma());
 // GUILDA (Classes e Encapsulamento)
 class Guilda {
     cacadores = [];

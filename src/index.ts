@@ -16,12 +16,12 @@ interface dadosRanks {
 };
 
 const detalhesRanks: Record<ranks, dadosRanks> = { //cria um objeto com chave e valor. Chave sendo cada letra de rank e o valor os dados que a gente queria colocar
-    [ranks.E]: { poderMinimo: 1000, poderMaximo: 2000, temArmaEspecial: false },
-    [ranks.D]: { poderMinimo: 2001, poderMaximo: 4000, temArmaEspecial: false },
-    [ranks.C]: { poderMinimo: 4001, poderMaximo: 6000, temArmaEspecial: false },
-    [ranks.B]: { poderMinimo: 6001, poderMaximo: 8000, temArmaEspecial: true },
-    [ranks.A]: { poderMinimo: 8001, poderMaximo: 10000, temArmaEspecial: true },
-    [ranks.S]: { poderMinimo: 10001, poderMaximo: 12000, temArmaEspecial: true },
+    [ranks.E]: { poderMinimo: 1000, poderMaximo: 2000, temArmaEspecial: geradorDeArma() },
+    [ranks.D]: { poderMinimo: 2001, poderMaximo: 4000, temArmaEspecial: geradorDeArma() },
+    [ranks.C]: { poderMinimo: 4001, poderMaximo: 6000, temArmaEspecial: geradorDeArma() },
+    [ranks.B]: { poderMinimo: 6001, poderMaximo: 8000, temArmaEspecial: geradorDeArma() },
+    [ranks.A]: { poderMinimo: 8001, poderMaximo: 10000, temArmaEspecial: geradorDeArma() },
+    [ranks.S]: { poderMinimo: 10001, poderMaximo: 12000, temArmaEspecial: geradorDeArma() },
 };
 
 //REGISTRO DA ALMA (Interfaces)
@@ -67,6 +67,7 @@ function escolherMissao() {  //Aqui o usuário tem a chance de escolher, a parti
         } else if (letraEscolhida === "a") {
             tipoEscolhido = tipoMissao.Assalto;
             console.log("Missão iniciada:", tipoMissao[1])
+            console.log(`ARMA FOI ATIBUIDA: ${geradorDeArma()}`);
         } else if (letraEscolhida === "d") {
             tipoEscolhido = tipoMissao.Defesa;
             console.log("Missão iniciada:", tipoMissao[2])
@@ -83,11 +84,6 @@ function escolherMissao() {  //Aqui o usuário tem a chance de escolher, a parti
 
         console.log('===========================================================');
         
-        if (letraEscolhida === "a") {
-            // console.log(`ARMA FOI ATIBUIDA: ${geradorDeArma()}`);
-            console.log(`ARMA FOI ATIBUIDA: ${geradorDeArma()? "sim" : "não"}`);
-            console.log('===========================================================');
-        }
         console.log(`====== PAINEL DE NOVOS MEMBROS ======`);
         registrarMembrosGuilda();
 
@@ -134,7 +130,7 @@ function geradorDeArma(): boolean {
     
 }
 //TESTE E CONFERÊNCIA DO GERADOR DE ARMA
-// console.log("ARMA FOI ATIBUIDA: " + geradorDeArma());
+console.log("TESTE DE FORA PARA ARMA FOI ATIBUIDA: " + geradorDeArma());
 
 // GUILDA (Classes e Encapsulamento)
 class Guilda {
@@ -226,3 +222,5 @@ function enviarMembros(dificuldadeMissao: number, tipoEscolhido: tipoMissao) {
 //CORRIGIDO>>> Corrigir erro da lista de criação de personagens: Ao tirar personagem, ainda aparece tentativa de console dos "excluídos".
 //Acrescentar "Escolha" de masmorra pro jogador >>> CORRIGIDO NO TSCONFIG: index.ts:76:5 - error TS2591: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
 //Acrescentar "emboscada?" para Rastreameto e que dá debuff nos persoagens
+
+//BUFF DE ARMA ESPECIAL ACONTECENDO MESMO SEM TER ARMA ATRIBUIDA NA MISSAO. >>>CORRIGIR
