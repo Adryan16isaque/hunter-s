@@ -53,8 +53,6 @@ const detalhesMissao: Record<tipoMissao, dadosMissao> = { //Mesmo formato anteri
 }
 
 // //SELEÇÃO DE MISSÃO
-//EM CONSTRUÇÃO
-
 function escolherMissao() {  //Aqui o usuário tem a chance de escolher, a partir de um evento "data", que captura o que foi digitado pelo usuário.
     console.log(`Escolha qual o tipo de missão:(R) Rastreamento, (A) Assalto, (D) Defesa`)
     process.stdin.once("data", (letraDigitada) => {
@@ -95,7 +93,7 @@ function escolherMissao() {  //Aqui o usuário tem a chance de escolher, a parti
 
 }
 
-escolherMissao(); //executa a escolha do usuário. Gera a dificuldade. Em assanto, ressalta se há atribuição de arma ou não.
+escolherMissao(); 
 
 //NÍVEL DA MISSÃO ALEATÓRIO
 function geradorDeMissao(tipo: tipoMissao):number {
@@ -133,7 +131,6 @@ function geradorDeArma(): boolean {
 }
 
 
-
 // GUILDA (Classes e Encapsulamento)
 class Guilda {
     private cacadores: Cacador[] = [];
@@ -156,7 +153,7 @@ class Guilda {
             console.log('===========================================================');
             return false
         }
-        //tirei o != undefined, o if ja verifica se é truthly
+        //define se vai ter arma especial atribuída ao personagem e acrescenta o buff.
         if (tipoDeMissao === tipoMissao.Assalto && cacador.armaEspecial === true) {
             cacador.poderDeBatalha += 2000
             console.log(`${cacador.nome} recebeu buff`);
@@ -189,7 +186,7 @@ const npcs : Cacador [] = [
     criarCacador('Pobre', 51, ranks.E),
     criarCacador('Mediano', 15, ranks.C),
     criarCacador('Xing-lung', 21, ranks.S),
-    criarCacador('Maluco', 33, ranks.B), //Fazer depois um jeito de acrescentar a tommy gun???
+    criarCacador('Maluco', 33, ranks.B),
     criarCacador('BigBig', 24, ranks.D),
 ]
 
@@ -211,18 +208,3 @@ function enviarMembros(dificuldadeMissao: number, tipoEscolhido: tipoMissao) {
     guilda.enviarParaMissao('Maluco', dificuldadeMissao, tipoEscolhido);
     guilda.enviarParaMissao('BigBig', dificuldadeMissao, tipoEscolhido);
 }
-
-//ANTIGO >>> ENVIANDO PARA MISSAO (Mesmo registrado, somente aqui ele é ou não enviado para a missão)
-// guilda.enviarParaMissao('Pobre', 5000, tipoMissao.Assalto)
-// guilda.enviarParaMissao('Mediano', 5000, tipoMissao.Defesa)
-// guilda.enviarParaMissao('Xing-lung', 5000, tipoMissao.Rastreamento)
-// guilda.enviarParaMissao('Maluco', 5000, tipoMissao.Assalto)
-// guilda.enviarParaMissao('BigBig', 5000, tipoMissao.Assalto)
-
-
-//FEITO>>> Construir a lógica de Randon nivel pra masmorra (linhas 37 a 52)
-//CORRIGIDO>>> Corrigir erro da lista de criação de personagens: Ao tirar personagem, ainda aparece tentativa de console dos "excluídos".
-//Acrescentar "Escolha" de masmorra pro jogador >>> CORRIGIDO NO TSCONFIG: index.ts:76:5 - error TS2591: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
-//Acrescentar "emboscada?" para Rastreameto e que dá debuff nos persoagens
-
-//BUFF DE ARMA ESPECIAL ACONTECENDO MESMO SEM TER ARMA ATRIBUIDA NA MISSAO. >>>CORRIGIDO >>> Mensagem de aviso de CHANCE e não que foi realmente atribuída ao gerar missão.
